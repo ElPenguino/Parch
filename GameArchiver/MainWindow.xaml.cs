@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace GameArchiver
+namespace Parch
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

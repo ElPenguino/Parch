@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace GameArchiver {
+namespace Parch {
     public interface GameArchive {
 
         int numFiles { get; set; }

@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
-namespace GameArchiver
+namespace Parch
 {
     /// <summary>
     /// Interaction logic for App.xaml

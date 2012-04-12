@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace GameArchiver {
+namespace Parch {
     public class FileRecord {
 
         public FileRecord(int ID, string Name, int Size) {

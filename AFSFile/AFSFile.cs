@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace GameArchiver {
+namespace Parch {
     class AFSFile : GameArchive {
         private BinaryReader File;
         private String[] filenames;

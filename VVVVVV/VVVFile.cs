@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-namespace GameArchiver
+namespace Parch
 {
     class VVVFile : GameArchive,IEnumerable
     {   

@@ -7,11 +7,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("GameArchiver")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Parch")]
+[assembly: AssemblyDescription("Multiple Format Archive Extractor")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("GameArchiver")]
+[assembly: AssemblyCompany("ElPenguino")]
+[assembly: AssemblyProduct("Parch")]
 [assembly: AssemblyCopyright("Copyright © ElPenguino 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

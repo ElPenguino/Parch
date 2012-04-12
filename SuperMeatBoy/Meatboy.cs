@@ -2,7 +2,7 @@
 using System.Collections;
 using System.IO;
 
-namespace GameArchiver {
+namespace Parch {
     struct DirInfo {
         public int a;
         public int b;
