@@ -16,6 +16,8 @@ namespace Parch
 
         public bool LoadFile(FileStream File)
         {
+            if (File.Name.Substring(File.Name.LastIndexOf('\\') + 1) != "vvvvvvmusic.vvv")
+                return false;
             file = new BinaryReader(File);
 
             file.BaseStream.Seek(0, SeekOrigin.Begin);
@@ -37,8 +39,6 @@ namespace Parch
             for (int i = 0; i < 128; i++)
             {
                 filenameTmp = new System.Text.ASCIIEncoding().GetString(file.ReadBytes(48)).Trim('\0');
-                if (filenameTmp.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
-                    return false;
                 offsetTmp = baseoffset;
                 reservedTmp = file.ReadInt32();
                 sizeTmp = file.ReadInt32();

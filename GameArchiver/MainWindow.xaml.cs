@@ -65,9 +65,12 @@ namespace Parch
                     for (int i = 0; i < archive.numFiles; i++)
                         fileList.Add(new FileRecord(i, archive.getFileName(i), archive.getFileSize(i)));
                     dataGrid1.ItemsSource = fileList;
+                    Properties.Settings.Default.lastOpenPath = dlg.FileName.Substring(0, dlg.FileName.LastIndexOf('\\'));
+                    Properties.Settings.Default.Save();
                 }
-                Properties.Settings.Default.lastOpenPath = dlg.FileName.Substring(0, dlg.FileName.LastIndexOf('\\'));
-                Properties.Settings.Default.Save();
+                else {
+                    MessageBox.Show("Unrecognized File Type", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
