@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.IO;
 
 namespace Parch {
@@ -25,8 +24,7 @@ namespace Parch {
         }
 
     }
-    class MeatBoy : GameArchive, IEnumerable
-    {
+    class MeatBoy : GameArchive {
         private BinaryReader File;
         public int numFiles { get; set; }
         private int[] fileoffsets;
@@ -34,13 +32,12 @@ namespace Parch {
         private int[] unknowns;
         private string[] filenames;
 
-        public bool LoadFile(FileStream file)
-        {
+        public bool LoadFile(FileStream file) {
             File = new BinaryReader(file);
 
             File.BaseStream.Seek(0, SeekOrigin.Begin);
 
-            if (file.Name.Substring(file.Name.LastIndexOf('\\')+1) == "gameaudio.dat") {
+            if (file.Name.Substring(file.Name.LastIndexOf('\\') + 1) == "gameaudio.dat") {
                 byte[] header = File.ReadBytes(0x18); // wut these do?
                 numFiles = header[20] + (header[21] << 8);
                 fileoffsets = new int[numFiles];
@@ -146,14 +143,8 @@ namespace Parch {
         public String getFileName(int i) {
             return filenames[i].Replace("/", "\\");
         }
-        public IEnumerator GetEnumerator()
-        {
-            for (int i = 0; i < numFiles; i++)
-                yield return getFile(i);
-        }
 
-        public byte[] getFile(int i)
-        {
+        public byte[] getFile(int i) {
             File.BaseStream.Seek(fileoffsets[i], SeekOrigin.Begin);
             return File.ReadBytes(filesizes[i]);
         }

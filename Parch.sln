@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NARCFile", "NARCFile\NARCFi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperMeatBoy", "SuperMeatBoy\SuperMeatBoy.csproj", "{86B1221B-F39D-42B9-9552-2EF4031A8200}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDATReader", "SDATReader\SDATReader.csproj", "{89FACB8E-FD6B-4A7A-A859-58FBEFC2BEBA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,14 @@ Global
 		{86B1221B-F39D-42B9-9552-2EF4031A8200}.Release|Any CPU.Build.0 = Release|Any CPU
 		{86B1221B-F39D-42B9-9552-2EF4031A8200}.Release|x64.ActiveCfg = Release|Any CPU
 		{86B1221B-F39D-42B9-9552-2EF4031A8200}.Release|x86.ActiveCfg = Release|Any CPU
+		{89FACB8E-FD6B-4A7A-A859-58FBEFC2BEBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89FACB8E-FD6B-4A7A-A859-58FBEFC2BEBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89FACB8E-FD6B-4A7A-A859-58FBEFC2BEBA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{89FACB8E-FD6B-4A7A-A859-58FBEFC2BEBA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{89FACB8E-FD6B-4A7A-A859-58FBEFC2BEBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89FACB8E-FD6B-4A7A-A859-58FBEFC2BEBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89FACB8E-FD6B-4A7A-A859-58FBEFC2BEBA}.Release|x64.ActiveCfg = Release|Any CPU
+		{89FACB8E-FD6B-4A7A-A859-58FBEFC2BEBA}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

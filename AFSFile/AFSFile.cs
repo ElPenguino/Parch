@@ -26,7 +26,7 @@ namespace Parch {
                 return false;
                 //throw new Exception("File too small!");
             }
-            
+
             fileOffsets = new int[numFiles];
             fileSizes = new int[numFiles];
             for (int i = 0; i < numFiles; i++) {
@@ -39,7 +39,7 @@ namespace Parch {
 
             this.File.BaseStream.Seek(fileNameOffset, SeekOrigin.Begin);
 
-            
+
             unknowns = new byte[numFiles][];
             filenames = new String[numFiles];
             String tmpfilename;

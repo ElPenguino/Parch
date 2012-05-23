@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Parch
-{
-    class VVVFile : GameArchive,IEnumerable
-    {   
+namespace Parch {
+    class VVVFile : GameArchive {
         private BinaryReader file;
         public int numFiles { get; set; }
         private List<int> fileOffsets;
@@ -14,8 +11,7 @@ namespace Parch
         private List<int> reserved;
         private List<String> fileNames;
 
-        public bool LoadFile(FileStream File)
-        {
+        public bool LoadFile(FileStream File) {
             if (File.Name.Substring(File.Name.LastIndexOf('\\') + 1) != "vvvvvvmusic.vvv")
                 return false;
             file = new BinaryReader(File);
@@ -36,8 +32,7 @@ namespace Parch
             int reservedTmp;
             int sizeTmp;
             byte hasFile;
-            for (int i = 0; i < 128; i++)
-            {
+            for (int i = 0; i < 128; i++) {
                 filenameTmp = new System.Text.ASCIIEncoding().GetString(file.ReadBytes(48)).Trim('\0');
                 offsetTmp = baseoffset;
                 reservedTmp = file.ReadInt32();
@@ -60,11 +55,6 @@ namespace Parch
             }
             return true;
         }
-        public IEnumerator GetEnumerator()
-        {
-            for (int i = 0; i < numFiles; i++)
-                yield return getFile(i);
-        }
         public String getFileExtensions() {
             return "vvvvvvmusic.vvv";
         }
@@ -75,8 +65,7 @@ namespace Parch
             return true;
         }
 
-        public byte[] getFile(int i)
-        {
+        public byte[] getFile(int i) {
             file.BaseStream.Seek(fileOffsets[i], SeekOrigin.Begin);
             return file.ReadBytes(fileSizes[i]);
         }

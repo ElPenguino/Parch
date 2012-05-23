@@ -5,20 +5,17 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Parch
-{
+namespace Parch {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
-    {
+    public partial class MainWindow : Window {
         public GameArchive archive;
         public List<FileRecord> fileList;
         String filterstring = "";
         List<GameArchive> ArchivePlugins;
         Boolean preservePaths = true;
-        public MainWindow()
-        {
+        public MainWindow() {
             InitializeComponent();
             Window.Title = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
             String[] filePaths = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.dll");
@@ -53,12 +50,15 @@ namespace Parch
                     archive.close();
                     archive = null;
                     dataGrid1.ItemsSource = new List<FileRecord>();
+                    Window.Title = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
                 }
                 FileStream OpenFile = File.Open(dlg.FileName, FileMode.Open);
 
                 foreach (GameArchive plugin in ArchivePlugins)
-                    if (plugin.LoadFile(OpenFile))
+                    if (plugin.LoadFile(OpenFile)) {
                         archive = plugin;
+                        break;
+                    }
 
                 if (archive != null) {
                     fileList = new List<FileRecord>();
@@ -67,6 +67,7 @@ namespace Parch
                     dataGrid1.ItemsSource = fileList;
                     Properties.Settings.Default.lastOpenPath = dlg.FileName.Substring(0, dlg.FileName.LastIndexOf('\\'));
                     Properties.Settings.Default.Save();
+                    Window.Title = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name + " - " + dlg.FileName.Substring(dlg.FileName.LastIndexOf('\\') + 1);
                 }
                 else {
                     MessageBox.Show("Unrecognized File Type", "Error", MessageBoxButton.OK, MessageBoxImage.Error);

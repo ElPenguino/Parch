@@ -1,26 +1,43 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Parch
-{
-    class NARCFile : GameArchive,IEnumerable {
+namespace Parch {
+    struct FNTBTableEntry {
+        public int DirStart;
+        public short FilePos;
+        public short DirCount;
+
+        public FNTBTableEntry(int DirStart, short FilePos, short DirCount) {
+            this.DirStart = DirStart;
+            this.FilePos = FilePos;
+            this.DirCount = DirCount;
+        }
+
+    }
+    struct Chunk {
+        public string Name;
+        public byte[] data;
+        public Chunk(String Name, byte[] data) {
+            this.Name = Name;
+            this.data = data;
+        }
+    }
+    class NARCFile : GameArchive {
 
         public int numFiles { get; set; }
-        private byte[][] files;
         private string[] filenames;
         private int[] FileSizes;
         private int[] FileOffsets;
         private BinaryReader File;
         private bool littleendian;
-        private List<Tuple<string, byte[]>> chunks = new List<Tuple<string, byte[]>>();
-        private List<Tuple<int, short, short>> FNTBTable = new List<Tuple<int, short, short>>();
+        private List<Chunk> chunks = new List<Chunk>();
+        private List<FNTBTableEntry> FNTBTable = new List<FNTBTableEntry>();
+        BinaryReader FIMGChunk;
 
-        public bool LoadFile(FileStream file)
-        {
+        public bool LoadFile(FileStream file) {
             File = new BinaryReader(file);
 
             File.BaseStream.Seek(4, SeekOrigin.Begin);
@@ -34,7 +51,6 @@ namespace Parch
                 return false;
                 //throw new Exception("Not a NARC");
             }
-
             littleendian = File.ReadUInt16().Equals(0xFFFE); // Get BOM (Byte Order Mark)
 
             byte[] unknownbytes = File.ReadBytes(10); // wut these do?
@@ -71,72 +87,58 @@ namespace Parch
                 chunks.Add(ReadChunk());
         }
 
-        private void BuildFileTable()
-        {
+        private void BuildFileTable() {
             BinaryReader FATBChunk = null;
-            foreach (Tuple<string, byte[]> chunk in chunks)
-                if (chunk.Item1.Equals("FATB"))
-                   FATBChunk = new BinaryReader(new MemoryStream(chunk.Item2));
+            foreach (Chunk chunk in chunks)
+                if (chunk.Name.Equals("FATB"))
+                    FATBChunk = new BinaryReader(new MemoryStream(chunk.data));
             if (FATBChunk == null)
                 throw new Exception("No FATB Chunk found");
 
-            BinaryReader FIMGChunk = null;
-            foreach (Tuple<string, byte[]> chunk in chunks)
-                if (chunk.Item1.Equals("FIMG"))
-                    FIMGChunk = new BinaryReader(new MemoryStream(chunk.Item2));
+            foreach (Chunk chunk in chunks)
+                if (chunk.Name.Equals("FIMG"))
+                    FIMGChunk = new BinaryReader(new MemoryStream(chunk.data));
             if (FIMGChunk == null)
                 throw new Exception("No FIMG Chunk found");
 
-            files = new byte[FATBChunk.ReadInt32()][];
-            FileOffsets = new int[files.Length];
-            FileSizes = new int[files.Length];
-            filenames = new string[files.Length];
-            for (int i = 0; i < files.Length; i++)
-            {
+            numFiles = FATBChunk.ReadInt32();
+            FileOffsets = new int[numFiles];
+            FileSizes = new int[numFiles];
+            filenames = new string[numFiles];
+            for (int i = 0; i < numFiles; i++) {
                 FileOffsets[i] = FATBChunk.ReadInt32();
-                FileSizes[i] = FATBChunk.ReadInt32()-FileOffsets[i];
+                FileSizes[i] = FATBChunk.ReadInt32() - FileOffsets[i];
                 filenames[i] = i.ToString();
             }
-
-            for (int i = 0; i < files.Length; i++)
-            {
-                FIMGChunk.BaseStream.Seek(FileOffsets[i], SeekOrigin.Begin);
-                files[i] = FIMGChunk.ReadBytes(FileSizes[i]);
-            }
-            numFiles = files.Length;
         }
 
-        private void BuildFilenameTable()
-        {
+        private void BuildFilenameTable() {
             BinaryReader FNTBChunk = null;
-            foreach (Tuple<string, byte[]> chunk in chunks)
-                if (chunk.Item1.Equals("FNTB"))
-                    FNTBChunk = new BinaryReader(new MemoryStream(chunk.Item2));
+            foreach (Chunk chunk in chunks)
+                if (chunk.Name.Equals("FNTB"))
+                    FNTBChunk = new BinaryReader(new MemoryStream(chunk.data));
             if (FNTBChunk == null)
                 throw new Exception("No FNTB Chunk found");
 
-            FNTBTable.Add(new Tuple<int, short, short>(FNTBChunk.ReadInt32(), FNTBChunk.ReadInt16(), FNTBChunk.ReadInt16()));
-            for (int i = 0; i < FNTBTable[0].Item3-1; i++)
-                FNTBTable.Add(new Tuple<int, short, short>(FNTBChunk.ReadInt32(), FNTBChunk.ReadInt16(), FNTBChunk.ReadInt16()));
+            FNTBTable.Add(new FNTBTableEntry(FNTBChunk.ReadInt32(), FNTBChunk.ReadInt16(), FNTBChunk.ReadInt16()));
+            for (int i = 0; i < FNTBTable[0].DirCount - 1; i++)
+                FNTBTable.Add(new FNTBTableEntry(FNTBChunk.ReadInt32(), FNTBChunk.ReadInt16(), FNTBChunk.ReadInt16()));
             List<String> paths = WalkDirectoryTree(FNTBChunk, 0xF000);
             for (int i = 0; i < paths.Count; i++)
                 filenames[i] = paths[i];
-                
+
 
         }
 
-        private List<String> WalkDirectoryTree(BinaryReader FNTBChunk, ushort id, string curPath = "", List<String> paths = null)
-        {
+        private List<String> WalkDirectoryTree(BinaryReader FNTBChunk, ushort id, string curPath = "", List<String> paths = null) {
             if (paths == null)
                 paths = new List<String>();
             String name;
             long curPos;
-            FNTBChunk.BaseStream.Seek(FNTBTable[id - 0xF000].Item1, SeekOrigin.Begin);
+            FNTBChunk.BaseStream.Seek(FNTBTable[id - 0xF000].DirStart, SeekOrigin.Begin);
             byte len = FNTBChunk.ReadByte();
-            while (len != 0)
-            {
-                if ((len & 0x80) == 0x80)
-                {
+            while (len != 0) {
+                if ((len & 0x80) == 0x80) {
                     name = Encoding.ASCII.GetString(FNTBChunk.ReadBytes(len & 0x7F));
                     id = FNTBChunk.ReadUInt16();
                     curPos = FNTBChunk.BaseStream.Position;
@@ -151,18 +153,11 @@ namespace Parch
 
         }
 
-        public String[] ListFiles()
-        {
-            return filenames;
-        }
 
-
-        private Tuple<string, byte[]> ReadChunk()
-        {
+        private Chunk ReadChunk() {
             byte[] buffer = new byte[0];
             string chunkType = Encoding.ASCII.GetString(File.ReadBytes(4));
-            if (littleendian)
-            {
+            if (littleendian) {
                 char[] tempName = chunkType.ToCharArray();
                 Array.Reverse(tempName);
                 chunkType = new string(tempName);
@@ -171,35 +166,17 @@ namespace Parch
             if ((File.BaseStream.Position + len > File.BaseStream.Length) || (len < 0))
                 throw new Exception("Chunk specified invalid length");
             buffer = File.ReadBytes(len);
-            return new Tuple<string, byte[]>(chunkType, buffer);
+            return new Chunk(chunkType, buffer);
         }
-        public byte[] getFile(int i)
-        {
-            if ((i > files.Length) || (i < 0))
-                throw new Exception("File Not Found");
-            return files[i];
+        public byte[] getFile(int i) {
+            FIMGChunk.BaseStream.Seek(FileOffsets[i], SeekOrigin.Begin);
+            return FIMGChunk.ReadBytes(FileSizes[i]);
 
         }
-        public Tuple<string, byte[]> GetFile(string filename)
-        {
-            if (!filenames.Contains(filename))
-                throw new Exception("File Not Found");
-            for (int i = 0; i < filenames.Length; i++)
-                if (filenames[i].Equals(filename))
-                    return new Tuple<string, byte[]>(filenames[i], files[i]);
-            return null;
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            for (int i = 0; i < files.Length; i++)
-                yield return getFile(i);
-        }
-        private void DecompLZSS()
-        {
+        private void DecompLZSS() {
             File.BaseStream.Seek(0, SeekOrigin.Begin);
             if (File.ReadByte() != 0x10)
-               return;
+                return;
             uint decompressed = 0;
             MemoryStream decomp = new MemoryStream(new byte[File.ReadUInt32()]);
             byte[] ring_buffer = new byte[4113];
@@ -212,12 +189,10 @@ namespace Parch
             int j;
             byte c;
             File.BaseStream.Seek(4, SeekOrigin.Begin);
-            while (true)
-            {
+            while (true) {
                 flags <<= 1;
                 z++;
-                if (z == 8)
-                {
+                if (z == 8) {
                     c = File.ReadByte();
                     if (File.BaseStream.Position >= File.BaseStream.Length)
                         break;
@@ -229,16 +204,14 @@ namespace Parch
                     c = File.ReadByte();
                     if (File.BaseStream.Position >= File.BaseStream.Length)
                         break;
-                    if (decompressed < decomp.Length)
-                    {
+                    if (decompressed < decomp.Length) {
                         decomp.WriteByte(c);
                         ring_buffer[r++] = c;
                         r &= 4095;
                         decompressed++;
                     }
                 }
-                else
-                {
+                else {
                     i = File.ReadByte();
                     if (File.BaseStream.Position >= File.BaseStream.Length)
                         break;
@@ -247,11 +220,9 @@ namespace Parch
                         break;
                     j = j | ((i << 8) & 0xF00);
                     i = ((i >> 4) & 0xF) + 2;
-                    for (int k = 0; k <= i; k++)
-                    {
+                    for (int k = 0; k <= i; k++) {
                         c = ring_buffer[(r - j - 1) & (4095)];
-                        if (decompressed < decomp.Length)
-                        {
+                        if (decompressed < decomp.Length) {
                             decomp.WriteByte(c);
                             ring_buffer[r++] = c;
                             r &= 4095;
@@ -264,7 +235,7 @@ namespace Parch
         }
         public void close() {
             if (this.File != null)
-               this.File.Close();
+                this.File.Close();
         }
     }
 }
