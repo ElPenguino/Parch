@@ -65,10 +65,17 @@ namespace Parch {
                 FileStream OpenFile = File.Open(dlg.FileName, FileMode.Open);
 
                 foreach (GameArchive plugin in ArchivePlugins)
-                    if (plugin.LoadFile(OpenFile)) {
+                {
+#if DEBUG
+                    Console.WriteLine("{0} attempting to open file", plugin);
+#endif
+                    OpenFile.Seek(0, SeekOrigin.Begin);
+                    if (plugin.LoadFile(OpenFile))
+                    {
                         archive = plugin;
                         break;
                     }
+                }
 
                 if (archive != null) {
                     fileList = new List<FileRecord>();

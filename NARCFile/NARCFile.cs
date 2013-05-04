@@ -42,9 +42,15 @@ namespace Parch {
 
             File.BaseStream.Seek(4, SeekOrigin.Begin);
 
-            if (!File.ReadBytes(4).SequenceEqual(Encoding.ASCII.GetBytes("NARC")))
-                DecompLZSS();
-
+            try
+            {
+                if (!File.ReadBytes(4).SequenceEqual(Encoding.ASCII.GetBytes("NARC")))
+                    DecompLZSS();
+            }
+            catch
+            {
+                return false;
+            }
             File.BaseStream.Seek(0, SeekOrigin.Begin);
 
             if (!File.ReadBytes(4).SequenceEqual(Encoding.ASCII.GetBytes("NARC"))) { // Check magic bytes
@@ -178,7 +184,8 @@ namespace Parch {
             if (File.ReadByte() != 0x10)
                 return;
             uint decompressed = 0;
-            MemoryStream decomp = new MemoryStream(new byte[File.ReadUInt32()]);
+            byte[] buffer = new byte[File.ReadUInt32()];
+            MemoryStream decomp = new MemoryStream(buffer);
             byte[] ring_buffer = new byte[4113];
             for (int x = 0; x < ring_buffer.Length; x++)
                 ring_buffer[x] = 0xFF;
@@ -188,8 +195,20 @@ namespace Parch {
             int i;
             int j;
             byte c;
+            bool testHeader = true;
             File.BaseStream.Seek(4, SeekOrigin.Begin);
             while (true) {
+                if (testHeader && (decomp.Length >= 4))
+                {
+                    long currentLocation = decomp.Position;
+                    testHeader = false;
+                    decomp.Seek(0, SeekOrigin.Begin);
+                    byte[] testbuffer = new byte[4];
+                    decomp.Read(testbuffer,0,4);
+                    if (!Encoding.ASCII.GetString(testbuffer).Equals("NARC"))
+                        throw new Exception("Not compressed NARC");
+                    decomp.Seek(currentLocation, SeekOrigin.Begin);
+                }
                 flags <<= 1;
                 z++;
                 if (z == 8) {
