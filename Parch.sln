@@ -1,19 +1,37 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parch", "GameArchiver\Parch.csproj", "{F8E761E0-53A3-4F27-A866-E81E1CD6698A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ookii.Dialogs.Wpf", "Ookii.Dialogs.Wpf\Ookii.Dialogs.Wpf.csproj", "{D01B1D20-8F5B-4834-8E5C-C7EC6DD587D4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AFSFile", "AFSFile\AFSFile.csproj", "{C3F45C42-0A98-48A5-A8C5-28BA4DD4A109}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F8E761E0-53A3-4F27-A866-E81E1CD6698A} = {F8E761E0-53A3-4F27-A866-E81E1CD6698A}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VVVVVV", "VVVVVV\VVVVVV.csproj", "{56EF197F-27E4-4D20-BDDC-B9331ABC6B26}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F8E761E0-53A3-4F27-A866-E81E1CD6698A} = {F8E761E0-53A3-4F27-A866-E81E1CD6698A}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NARCFile", "NARCFile\NARCFile.csproj", "{63BF1ECF-07A8-489E-B6E3-822452895C07}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F8E761E0-53A3-4F27-A866-E81E1CD6698A} = {F8E761E0-53A3-4F27-A866-E81E1CD6698A}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperMeatBoy", "SuperMeatBoy\SuperMeatBoy.csproj", "{86B1221B-F39D-42B9-9552-2EF4031A8200}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F8E761E0-53A3-4F27-A866-E81E1CD6698A} = {F8E761E0-53A3-4F27-A866-E81E1CD6698A}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDATReader", "SDATReader\SDATReader.csproj", "{89FACB8E-FD6B-4A7A-A859-58FBEFC2BEBA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F8E761E0-53A3-4F27-A866-E81E1CD6698A} = {F8E761E0-53A3-4F27-A866-E81E1CD6698A}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ROCKX", "ROCKX\ROCKX.csproj", "{61CAF6C5-DA17-4FCB-B0D7-93DC73A34BFC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F8E761E0-53A3-4F27-A866-E81E1CD6698A} = {F8E761E0-53A3-4F27-A866-E81E1CD6698A}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,14 +55,6 @@ Global
 		{F8E761E0-53A3-4F27-A866-E81E1CD6698A}.Release|x64.Build.0 = Release|x64
 		{F8E761E0-53A3-4F27-A866-E81E1CD6698A}.Release|x86.ActiveCfg = Release|x86
 		{F8E761E0-53A3-4F27-A866-E81E1CD6698A}.Release|x86.Build.0 = Release|x86
-		{D01B1D20-8F5B-4834-8E5C-C7EC6DD587D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D01B1D20-8F5B-4834-8E5C-C7EC6DD587D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D01B1D20-8F5B-4834-8E5C-C7EC6DD587D4}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{D01B1D20-8F5B-4834-8E5C-C7EC6DD587D4}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D01B1D20-8F5B-4834-8E5C-C7EC6DD587D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D01B1D20-8F5B-4834-8E5C-C7EC6DD587D4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D01B1D20-8F5B-4834-8E5C-C7EC6DD587D4}.Release|x64.ActiveCfg = Release|Any CPU
-		{D01B1D20-8F5B-4834-8E5C-C7EC6DD587D4}.Release|x86.ActiveCfg = Release|Any CPU
 		{C3F45C42-0A98-48A5-A8C5-28BA4DD4A109}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C3F45C42-0A98-48A5-A8C5-28BA4DD4A109}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3F45C42-0A98-48A5-A8C5-28BA4DD4A109}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -85,6 +95,14 @@ Global
 		{89FACB8E-FD6B-4A7A-A859-58FBEFC2BEBA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{89FACB8E-FD6B-4A7A-A859-58FBEFC2BEBA}.Release|x64.ActiveCfg = Release|Any CPU
 		{89FACB8E-FD6B-4A7A-A859-58FBEFC2BEBA}.Release|x86.ActiveCfg = Release|Any CPU
+		{61CAF6C5-DA17-4FCB-B0D7-93DC73A34BFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61CAF6C5-DA17-4FCB-B0D7-93DC73A34BFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61CAF6C5-DA17-4FCB-B0D7-93DC73A34BFC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{61CAF6C5-DA17-4FCB-B0D7-93DC73A34BFC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{61CAF6C5-DA17-4FCB-B0D7-93DC73A34BFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61CAF6C5-DA17-4FCB-B0D7-93DC73A34BFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61CAF6C5-DA17-4FCB-B0D7-93DC73A34BFC}.Release|x64.ActiveCfg = Release|Any CPU
+		{61CAF6C5-DA17-4FCB-B0D7-93DC73A34BFC}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

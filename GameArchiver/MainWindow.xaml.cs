@@ -23,15 +23,25 @@ namespace Parch {
             GameArchive tmpplugin;
             String alltypes = "All Supported|";
             foreach (String filename in filePaths) {
-                try {
+                try
+                {
                     tmpplugin = loadPlugin(filename);
-                    if (tmpplugin.addFileType()) {
+                    if (tmpplugin.addFileType())
+                    {
                         alltypes += tmpplugin.getFileExtensions() + ";";
                         filterstring += "|" + tmpplugin.getFileType() + "|" + tmpplugin.getFileExtensions();
                     }
                     ArchivePlugins.Add(tmpplugin);
                 }
-                catch (Exception b) {
+                catch (ReflectionTypeLoadException e)
+                {
+                    foreach (var item in e.LoaderExceptions)
+                    {
+                        MessageBox.Show(item.Message.ToString());
+                    }
+                }
+                catch (Exception b)
+                {
 #if DEBUG
                     MessageBox.Show(b.Message);
 #endif
@@ -89,11 +99,13 @@ namespace Parch {
                 }
             }
             else {
-                Ookii.Dialogs.Wpf.VistaFolderBrowserDialog dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
+                //Ookii.Dialogs.Wpf.VistaFolderBrowserDialog dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
+                System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
                 dialog.Description = "Please select a folder.";
-                dialog.UseDescriptionForTitle = true;
-                Nullable<bool> result = dialog.ShowDialog();
-                if (result == true) {
+                //dialog.UseDescriptionForTitle = true;
+                System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+                if (result == System.Windows.Forms.DialogResult.OK)
+                {
                     BinaryWriter writer;
                     string[] tempPath;
                     string tempName;

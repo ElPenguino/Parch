@@ -5,16 +5,14 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Ookii.Dialogs.Wpf")]
+[assembly: AssemblyTitle("ROCKX")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Ookii.org")]
-[assembly: AssemblyProduct("Ookii.Dialogs")]
-[assembly: AssemblyCopyright("Copyright © Sven Groot (Ookii.org) 2009")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("ROCKX")]
+[assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: System.CLSCompliant(true)]
-[assembly: System.Resources.NeutralResourcesLanguage("en-US")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -22,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("01e7448a-5c9c-432d-9d26-e661ccbcc522")]
+[assembly: Guid("56bd0d4b-47d5-471c-9855-2759fbd9b30b")]
 
 // Version information for an assembly consists of the following four values:
 //
